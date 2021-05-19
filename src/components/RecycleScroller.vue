@@ -1,68 +1,3 @@
-<template>
-  <div
-    v-observe-visibility="handleVisibilityChange"
-    class="vue-recycle-scroller"
-    :class="{
-      ready,
-      'page-mode': pageMode,
-      [`direction-${direction}`]: true,
-    }"
-    @scroll.passive="handleScroll"
-  >
-    <div
-      v-if="$slots.before"
-      class="vue-recycle-scroller__slot"
-    >
-      <slot
-        name="before"
-      />
-    </div>
-  <!-- Formatting recycle scroller with draggable library. Modified lines: 21-52 -->
-    <div
-      ref="wrapper"
-      :style="{ [direction === 'vertical' ? 'minHeight' : 'minWidth']: totalSize + 'px' }"
-      class="vue-recycle-scroller__item-wrapper"
-      :class="{ potentialDrop: isPotentialDrop(this.stage), dragEnter: isDragEnter(this.stage) }"
-    >
-    <Container class = "container"
-      :id="'stage' + stage.id"
-      :group-name = "'cardDroppable'"
-      :get-child-payload = "($event) => getChildPayload(stage.id, $event)"
-      :should-animate-drop = "shouldAnimateDrop"
-      :non-drag-area-selector = "'.noDrag'"
-      @drag-start = "dragStart"
-      @drag-end = "dragEnd"
-      @drag-enter = "() => dragEnter(stage.id, true)"
-      @drag-leave = "() => dragEnter(stage.id, false)"
-      @drop = "onDrop(stage.id, $event)">
-      <Draggable  v-for="view of pool" :key="view.nr.id"
-          :style="ready ? view.item ? {[direction === 'vertical' ? 'top' : 'left'] : `${view.position}px`, willChange : 'unset'} : { transform: `translate${direction === 'vertical' ? 'Y' : 'X'}(${view.position}px)` } : null"
-          class="vue-recycle-scroller__item-view"
-          :class="{ hover: hoverKey === view.nr.key, hideCards: dragging}"
-          @mouseenter="hoverKey = view.nr.key"
-          @mouseleave="hoverKey = null"
-        >
-          <slot
-            :item="view.item"
-            :index="view.nr.index"
-            :active="view.nr.used"
-          />
-      </Draggable>
-    </Container>
-    </div>
-    <div
-      v-if="$slots.after"
-      class="vue-recycle-scroller__slot"
-    >
-      <slot
-        name="after"
-      />
-    </div>
-
-    <ResizeObserver @notify="handleResize" />
-  </div>
-</template>
-
 <script>
 import { ResizeObserver } from 'vue-resize'
 import { ObserveVisibility } from 'vue-observe-visibility'
@@ -700,6 +635,72 @@ export default {
   },
 }
 </script>
+
+
+<template>
+  <div
+    v-observe-visibility="handleVisibilityChange"
+    class="vue-recycle-scroller"
+    :class="{
+      ready,
+      'page-mode': pageMode,
+      [`direction-${direction}`]: true,
+    }"
+    @scroll.passive="handleScroll"
+  >
+    <div
+      v-if="$slots.before"
+      class="vue-recycle-scroller__slot"
+    >
+      <slot
+        name="before"
+      />
+    </div>
+  <!-- Formatting recycle scroller with draggable library. Modified lines: 21-52 -->
+    <div
+      ref="wrapper"
+      :style="{ [direction === 'vertical' ? 'minHeight' : 'minWidth']: totalSize + 'px' }"
+      class="vue-recycle-scroller__item-wrapper"
+      :class="{ potentialDrop: isPotentialDrop(this.stage), dragEnter: isDragEnter(this.stage) }"
+    >
+    <container class = "container"
+      :id="'stage' + stage.id"
+      :group-name = "'cardDroppable'"
+      :get-child-payload = "($event) => getChildPayload(stage.id, $event)"
+      :should-animate-drop = "shouldAnimateDrop"
+      :non-drag-area-selector = "'.noDrag'"
+      @drag-start = "dragStart"
+      @drag-end = "dragEnd"
+      @drag-enter = "() => dragEnter(stage.id, true)"
+      @drag-leave = "() => dragEnter(stage.id, false)"
+      @drop = "onDrop(stage.id, $event)">
+      <draggable  v-for="view of pool" :key="view.nr.id"
+          :style="ready ? view.item ? {[direction === 'vertical' ? 'top' : 'left'] : `${view.position}px`, willChange : 'unset'} : { transform: `translate${direction === 'vertical' ? 'Y' : 'X'}(${view.position}px)` } : null"
+          class="vue-recycle-scroller__item-view"
+          :class="{ hover: hoverKey === view.nr.key, hideCards: dragging}"
+          @mouseenter="hoverKey = view.nr.key"
+          @mouseleave="hoverKey = null"
+        >
+          <slot
+            :item="view.item"
+            :index="view.nr.index"
+            :active="view.nr.used"
+          />
+      </draggable>
+    </container>
+    </div>
+    <div
+      v-if="$slots.after"
+      class="vue-recycle-scroller__slot"
+    >
+      <slot
+        name="after"
+      />
+    </div>
+
+    <ResizeObserver @notify="handleResize" />
+  </div>
+</template>
 
 <style>
 
