@@ -12,7 +12,7 @@ const config = Object.assign({}, base, {
     'scrollparent',
     'vue-observe-visibility',
     'vue-resize',
-    'vue-smooth-dnd'
+    'vue-smooth-dnd',
   ],
 })
 

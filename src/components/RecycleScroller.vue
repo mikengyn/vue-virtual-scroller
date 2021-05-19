@@ -71,7 +71,7 @@ import config from '../config'
 import { props, simpleArray } from './common'
 import { supportsPassive } from '../utils'
 import { mapState, mapGetters } from 'vuex'
-import { Container, Draggable } from "vue-smooth-dnd"
+import { Container, Draggable } from 'vue-smooth-dnd'
 
 let uid = 0
 
